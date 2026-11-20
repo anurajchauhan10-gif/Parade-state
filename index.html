@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Parade State C COY</title>
+<link rel="manifest" href="manifest.json"><link rel="apple-touch-icon" href="icon-180.png">
+<meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="Parade State"><meta name="theme-color" content="#9a6b00">
+<style>
+:root{--bg:#fbf7e6;--card:#fffdf3;--tx:#2a2410;--mu:#6f6240;--ac:#9a6b00;--ab:#fff;--bd:#e3d9a8;--hd:#f6ecbf;--bad:#a33;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#1c180a;--card:#272110;--tx:#f3ecd0;--mu:#b3a67a;--ac:#f2c230;--ab:#1c180a;--bd:#4a4020;--hd:#3a3216;--bad:#e07a7a;color-scheme:dark}}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--tx);font:15px/1.4 system-ui,-apple-system,Segoe UI,Roboto,sans-serif;padding:12px}
+h1{font-size:19px;margin:0 0 2px}h2{font-size:15px;margin:0 0 8px}
+.sub{color:var(--mu);font-size:13px;margin-bottom:10px}
+.card{background:var(--card);border:1px solid var(--bd);border-radius:10px;padding:12px;margin-bottom:12px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+label{font-size:12px;color:var(--mu);display:block;margin-bottom:2px}
+input,select,textarea{width:100%;box-sizing:border-box;padding:9px;border:1px solid var(--bd);border-radius:7px;background:var(--bg);color:var(--tx);font:inherit}
+textarea{min-height:84px;resize:vertical}
+button{padding:9px 13px;border:0;border-radius:7px;background:var(--ac);color:var(--ab);font-size:14px;cursor:pointer}
+button.s{background:transparent;color:var(--ac);border:1px solid var(--ac)}
+button.d{background:transparent;color:var(--bad);border:1px solid var(--bad);padding:5px 9px;font-size:12px}
+button.r{padding:6px 10px;font-size:13px}
+.full{grid-column:1/-1}.row{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
+nav{display:flex;gap:5px;margin-bottom:12px}nav button{flex:1;padding:9px 2px;font-size:12.5px;background:transparent;color:var(--ac);border:1px solid var(--ac)}nav button.on{background:var(--ac);color:var(--ab)}
+.tab{display:none}.tab.on{display:block}
+.sc{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:13px;white-space:nowrap}
+th,td{border:1px solid var(--bd);padding:5px 7px;text-align:center}
+th{background:var(--hd)}td:first-child,th:first-child{text-align:left;position:sticky;left:0;background:var(--card);font-weight:600}
+th:first-child{background:var(--hd)}
+td.t,th.t{background:var(--hd);font-weight:700}td.g,th.g{background:var(--ac);color:var(--ab);font-weight:700}
+td.p{font-weight:700}td.z{opacity:.45}
+.gh{font-weight:700;font-size:13px;color:var(--ac);margin:10px 0 2px}
+.it{display:flex;justify-content:space-between;gap:8px;align-items:center;padding:7px 0;border-bottom:1px solid var(--bd)}
+.it:last-child{border:0}.it small{color:var(--mu);display:block}
+.bad{color:var(--bad);align-self:center;font-size:13px}details summary{cursor:pointer;font-weight:600}
+@media print{nav,.noprint{display:none}body{background:#fff;color:#000}}
+</style>
+</head><body>
+<h1>Charlie Coy – Parade State</h1>
+<div class="sub">Posted strength minus strength at places of detail = present in company</div>
+
+<nav class="noprint"><button id="b_ps" class="on" onclick="tab('ps')">Parade State</button><button id="b_out" onclick="tab('out')">Out</button><button id="b_in" onclick="tab('in')">In</button><button id="b_st" onclick="tab('st')">Strength</button><button id="b_new" onclick="tab('new')">Add new</button></nav>
+
+<div class="tab" id="t_out"><div class="card"><h2>Out entry – going to a place of detail</h2>
+<div class="grid">
+<div><label>Rank</label><select id="o_r"></select></div>
+<div><label>Going to</label><select id="o_p"></select></div>
+<div class="full"><label>Out date</label><input type="date" id="o_d"></div>
+<div class="full"><label>Names (one per line, all of the selected rank)</label><textarea id="o_n" placeholder="Name 1&#10;Name 2"></textarea></div>
+</div>
+<div class="row"><button onclick="addMv('o')">Add Out</button><span id="o_m" class="bad"></span></div></div>
+<div class="card"><h2>Out – date wise</h2><div id="o_l"></div></div></div>
+
+<div class="tab" id="t_in"><div class="card"><h2>In entry – coming back from a place of detail</h2>
+<div class="grid">
+<div><label>Rank</label><select id="i_r"></select></div>
+<div><label>Coming from</label><select id="i_p"></select></div>
+<div class="full"><label>In date</label><input type="date" id="i_d"></div>
+<div class="full"><label>Names (one per line, all of the selected rank)</label><textarea id="i_n" placeholder="Name 1&#10;Name 2"></textarea></div>
+</div>
+<div class="row"><button onclick="addMv('i')">Add In</button><span id="i_m" class="bad"></span></div></div>
+<div class="card"><h2>In – date wise</h2><div id="i_l"></div></div></div>
+
+<div class="tab" id="t_st"><div class="card"><h2>Opening strength at each place of detail</h2><div class="sub">Type rank wise strength already at a place (AL, CL, SL, MH etc.). Out entries add to it and In entries reduce it, date wise.</div>
+<div id="chips" class="row" style="margin:0 0 10px"></div><div id="mt"></div></div></div>
+
+<div class="tab" id="t_new"><div class="card"><h2>Add new place of detail</h2><label>Place name</label><input id="np" placeholder="e.g. QRT, Range, Course"><div class="row"><button onclick="addPlace()">Add place</button><span id="msg3" class="bad"></span></div></div><div class="card"><h2>Places of detail</h2><div id="npl"></div></div>
+<div class="card"><h2>Backup and restore</h2><div class="sub">Save a copy of all your entries so they are not lost if Chrome data is cleared or you change phone.</div>
+<div class="row"><button onclick="backup()">Save backup file</button><button class="s" onclick="copyBackup()">Copy as text</button></div>
+<div style="margin-top:12px"><label>Restore from backup file</label><input type="file" id="rf" accept=".json,application/json" onchange="restoreFile(this)"></div>
+<div style="margin-top:10px"><label>Or paste backup text here</label><textarea id="rt"></textarea><div class="row"><button class="s" onclick="restoreTxt($('rt').value)">Restore from text</button></div></div>
+<div id="bm" class="bad" style="margin-top:8px"></div></div></div>
+
+<div class="tab on" id="t_ps">
+<div class="card"><div class="grid"><div><label>Parade state date</label><input type="date" id="pd" onchange="draw()"></div>
+<div style="display:flex;align-items:flex-end"><button class="s" onclick="$('pd').value=today();draw()">Today</button></div></div></div>
+<div class="card"><h2>Parade state</h2><div class="sc"><table id="tb"></table></div>
+<div class="sub" style="margin:12px 0 4px"><b>Strength summary (Offr / JCO / OR / Total)</b></div><div class="sc"><table id="sm"></table></div>
+<div class="row noprint"><button onclick="copyTxt()">Copy as text</button><button class="s" onclick="sendPdf()">Send as PDF</button><span id="pdfm" class="bad"></span></div></div>
+<div class="card"><h2>Movement on this date</h2><div id="mv"></div></div>
+<details class="card noprint"><summary>Posted strength settings</summary><div class="grid" id="ps" style="margin-top:8px"></div></details>
+</div>
+
+<script>
+var RANKS=[["Offr","Offr"],["Sub","JCO"],["Nb Sub","JCO"],["Hav","OR"],["LHav","OR"],["Nk","OR"],["LNK","OR"],["Gdr","OR"],["Av","AV"],["TDN","TDN"]];
+var DEF={"Offr":1,"Sub":4,"Nb Sub":3,"Hav":11,"LHav":5,"Nk":17,"LNK":5,"Gdr":18,"Av":25,"TDN":1};
+var PLACES=["AL","CL","SL","MH","TD","T/Att","Vijay Dwar Guard","SWC","Bde HQ","LSR","Mundota","Pratap Line"];
+var S={posted:Object.assign({},DEF),manual:{},places:PLACES,outs:[],ins:[]};
+var CP=0;
+function $(i){return document.getElementById(i)}
+function today(){var d=new Date();return new Date(d-d.getTimezoneOffset()*6e4).toISOString().slice(0,10)}
+function fd(s){if(!s)return"";var p=s.split("-");return p[2]+"/"+p[1]+"/"+p[0]}
+function esc(s){return String(s).replace(/[&<>"]/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]})}
+function save(){try{localStorage.setItem("charlieParade",JSON.stringify(S))}catch(e){}}
+function load(){try{var v=localStorage.getItem("charlieParade");if(!v)return;var o=JSON.parse(v);if(!o)return;
+ S.posted=Object.assign({},DEF,o.posted||{});S.manual=o.manual||{};
+ if(o.places&&o.places.length){S.places=o.places;PLACES=S.places}
+ S.outs=o.outs||[];S.ins=o.ins||[];
+ if(o.recs&&!o.outs){o.recs.forEach(function(r){S.outs.push({id:r.id,name:r.name,rank:r.rank,place:r.place,date:r.out});if(r.in)S.ins.push({id:r.id+0.5,name:r.name,rank:r.rank,place:r.place,date:r.in})})}
+}catch(e){}}
+function tab(t){["ps","out","in","st","new"].forEach(function(k){$("t_"+k).classList.toggle("on",k==t);$("b_"+k).classList.toggle("on",k==t)});draw()}
+
+/* strength at a place on a date = opening + outs - ins */
+function cnt(p,rk,d){var n=((S.manual[p]||{})[rk]||0);
+ S.outs.forEach(function(x){if(x.place==p&&x.rank==rk&&x.date<=d)n++});
+ S.ins.forEach(function(x){if(x.place==p&&x.rank==rk&&x.date<=d)n--});return Math.max(0,n)}
+function rows(){var d=$("pd").value||today();
+ function rowFor(rk){var c={},t=0;PLACES.forEach(function(p){c[p]=cnt(p,rk,d);t+=c[p]});var po=+S.posted[rk]||0;return{n:rk,po:po,c:c,out:t,pr:po-t}}
+ function sum(n,l){var o={n:n,po:0,c:{},out:0,pr:0};PLACES.forEach(function(p){o.c[p]=0});
+  l.forEach(function(x){o.po+=x.po;o.out+=x.out;o.pr+=x.pr;PLACES.forEach(function(p){o.c[p]+=x.c[p]})});return o}
+ var m={};RANKS.forEach(function(r){m[r[0]]=rowFor(r[0])});
+ var jco=sum("JCO Total",[m["Sub"],m["Nb Sub"]]),or=sum("OR Total",[m["Hav"],m["LHav"],m["Nk"],m["LNK"],m["Gdr"]]);
+ var all=sum("TOTAL",[m["Offr"],jco,or,m["TDN"],m["Av"]]);
+ return[m["Offr"],m["Sub"],m["Nb Sub"],[jco],m["Hav"],m["LHav"],m["Nk"],m["LNK"],m["Gdr"],[or],m["TDN"],m["Av"],[all,1]]}
+
+function addMv(k){var names=$(k+"_n").value.split("\n").map(function(s){return s.trim()}).filter(Boolean),d=$(k+"_d").value;
+ if(!names.length||!d){$(k+"_m").textContent="Enter names and date";return}
+ $(k+"_m").textContent="";var arr=k=="o"?S.outs:S.ins;
+ names.forEach(function(n){arr.push({id:Date.now()+Math.random(),name:n,rank:$(k+"_r").value,place:$(k+"_p").value,date:d})});
+ save();$(k+"_n").value="";draw()}
+function delMv(k,id){if(!confirm("Delete this entry?"))return;if(k=="o")S.outs=S.outs.filter(function(x){return x.id!=id});else S.ins=S.ins.filter(function(x){return x.id!=id});save();draw()}
+function grp(arr,k,verb){var g={};arr.forEach(function(r){(g[r.date]=g[r.date]||[]).push(r)});
+ return Object.keys(g).sort().reverse().map(function(d){return"<div class='gh'>"+fd(d)+" ("+g[d].length+")</div>"+g[d].map(function(r){return"<div class='it'><div><b>"+esc(r.rank)+" "+esc(r.name)+"</b><small>"+verb+" "+esc(r.place)+"</small></div><button class='d' onclick='delMv(\""+k+"\","+r.id+")'>Del</button></div>"}).join("")}).join("")||"<div class='sub'>No entries yet.</div>"}
+function ro(a){return a.slice().sort(function(x,y){return RANKS.findIndex(function(r){return r[0]==x.rank})-RANKS.findIndex(function(r){return r[0]==y.rank})})}
+function draw(){var d=$("pd").value||today();
+ var C=rows().map(function(x){var a=Array.isArray(x);return{r:a?x[0]:x,k:a?(x[1]?"g":"t"):""}});
+ function line(l,f,z){return"<tr><td>"+l+"</td>"+C.map(function(c){var v=f(c.r);return"<td class='"+c.k+(z&&!v?" z":"")+(z===2?" p":"")+"'>"+v+"</td>"}).join("")+"</tr>"}
+ var h="<tr><th>Place of detail</th>"+C.map(function(c){return"<th class='"+c.k+"'>"+c.r.n+"</th>"}).join("")+"</tr>";
+ h+=line("Posted strength",function(r){return r.po});
+ PLACES.forEach(function(p){h+=line(esc(p),function(r){return r.c[p]},1)});
+ h+=line("Total out",function(r){return r.out});h+=line("Present in Coy",function(r){return r.pr},2);
+ $("tb").innerHTML=h;$("sm").innerHTML=smHtml();
+ var o=ro(S.outs.filter(function(x){return x.date==d})),i=ro(S.ins.filter(function(x){return x.date==d}));
+ $("mv").innerHTML=mvHtml(o,i);var _x=(o.length?"<div class='gh'>Out ("+o.length+")</div>"+o.map(function(r){return"<div class='it'><div><b>"+esc(r.rank)+" "+esc(r.name)+"</b><small>to "+esc(r.place)+"</small></div></div>"}).join(""):"")+(i.length?"<div class='gh'>In ("+i.length+")</div>"+i.map(function(r){return"<div class='it'><div><b>"+esc(r.rank)+" "+esc(r.name)+"</b><small>from "+esc(r.place)+"</small></div></div>"}).join(""):"")||"<div class='sub'>No movement entered for this date.</div>";
+ $("o_l").innerHTML=grp(S.outs,"o","to");$("i_l").innerHTML=grp(S.ins,"i","from");
+ $("npl").innerHTML=PLACES.map(function(p,j){return"<div class='it'><b>"+esc(p)+"</b><button class='d' onclick='delPlace("+j+")'>Remove</button></div>"}).join("");
+ if(!document.activeElement||document.activeElement.type!="number")mt()}
+
+function mvHtml(o,i){function col(t,a,w){return"<div><div class='gh' style='margin-top:0'>"+t+" ("+a.length+")</div>"+(a.map(function(r){return"<div class='it'><div><b>"+esc(r.rank)+" "+esc(r.name)+"</b><small>"+w+" "+esc(r.place)+"</small></div></div>"}).join("")||"<div class='sub'>None</div>")+"</div>"}
+ return"<div class='grid'>"+col("In",i,"from")+col("Out",o,"to")+"</div>"}
+async function backup(){var m=$('bm');m.textContent='';var data=JSON.stringify(S),fn='Parade State C COY backup '+fd(today()).replace(/\//g,'-')+'.json';
+ try{var dl=window.claude&&await claude.use('downloads');if(dl){await dl.save({filename:fn,data:new Blob([data],{type:'application/json'})});return}}catch(e){if(e&&e.code=='declined')return}
+ var a=document.createElement('a');a.href=URL.createObjectURL(new Blob([data],{type:'application/json'}));a.download=fn;document.body.appendChild(a);a.click();a.remove();m.textContent='Backup file saved. Keep it safe.'}
+function copyBackup(){var m=$('bm'),data=JSON.stringify(S);try{navigator.clipboard.writeText(data).then(function(){m.textContent='Backup copied as text. Paste it into Notes or WhatsApp to keep it safe.'},function(){m.textContent='Could not copy. Try Save backup file.'})}catch(e){m.textContent='Could not copy. Try Save backup file.'}}
+function restoreFile(inp){var f=inp.files&&inp.files[0];if(!f)return;var r=new FileReader();r.onload=function(){restoreTxt(String(r.result))};r.readAsText(f)}
+function restoreTxt(txt){var m=$('bm');try{var o=JSON.parse(txt);if(!o||typeof o!='object'||!(o.outs||o.ins||o.recs||o.posted))throw 0;localStorage.setItem('charlieParade',txt);m.textContent='Restored. Reloading...';setTimeout(function(){location.reload()},400)}catch(e){m.textContent='That is not a valid backup.'}}
+function setCP(i){CP=i;mt()}
+function setM(e){var p=e.getAttribute("data-p"),r=e.getAttribute("data-r");S.manual[p]=S.manual[p]||{};S.manual[p][r]=Math.max(0,+e.value||0);save();draw();tot(p)}
+function tot(p){var m=S.manual[p]||{},t=0;RANKS.forEach(function(r){t+=+m[r[0]]||0});var el=$("tot");if(el)el.textContent=t}
+function mt(){if(CP>=PLACES.length)CP=0;var p=PLACES[CP];if(p===undefined){$("mt").innerHTML="";return}
+ $("chips").innerHTML=PLACES.map(function(q,i){return"<button class='r"+(i==CP?"":" s")+"' onclick='setCP("+i+")'>"+esc(q)+"</button>"}).join("");
+ var m=S.manual[p]||{};
+ $("mt").innerHTML="<h2>"+esc(p)+" – opening strength by rank</h2><div class='grid'>"+RANKS.map(function(r){return"<div><label>"+r[0]+"</label><input type='number' min='0' value='"+(m[r[0]]||0)+"' data-p=\""+esc(p)+"\" data-r=\""+r[0]+"\" onchange='setM(this)'></div>"}).join("")+"</div><div class='sub' style='margin-top:8px'>Opening total at "+esc(p)+": <b id='tot'></b></div>";tot(p)}
+function fillSel(){["o_p","i_p"].forEach(function(id){var v=$(id).value;$(id).innerHTML=PLACES.map(function(p){return"<option>"+esc(p)+"</option>"}).join("");if(PLACES.indexOf(v)>=0)$(id).value=v})}
+function addPlace(){var n=$("np").value.trim();if(!n){$("msg3").textContent="Enter place name";return}
+ if(PLACES.some(function(p){return p.toLowerCase()==n.toLowerCase()})){$("msg3").textContent="Place already exists";return}
+ $("msg3").textContent="";PLACES.push(n);S.places=PLACES;save();$("np").value="";CP=PLACES.length-1;fillSel();draw()}
+function delPlace(i){var p=PLACES[i];if(S.outs.concat(S.ins).some(function(r){return r.place==p})){alert("Entries exist for "+p+". Delete those entries first.");return}
+ if(!confirm("Remove "+p+"?"))return;PLACES.splice(i,1);delete S.manual[p];save();CP=0;fillSel();draw()}
+function getSum(){var R=rows();return[R[0],R[3][0],R[9][0],R[10],R[11],R[12][0]].map(function(x,i){return{n:['Offr','JCO','OR','TDN','AV','TOTAL'][i],po:x.po,out:x.out,pr:x.pr}})}
+function smHtml(){var s=getSum();function ln(l,k,c){return'<tr><td>'+l+'</td>'+s.map(function(x,i){return'<td class="'+(i==5?'g':'')+(c?' p':'')+'">'+x[k]+'</td>'}).join('')+'</tr>'}
+ return'<tr><th></th>'+s.map(function(x,i){return'<th class="'+(i==5?'g':'')+'">'+x.n+'</th>'}).join('')+'</tr>'+ln('Posted','po')+ln('Out','out')+ln('Present','pr',1)}
+function sumTxt(){var s=getSum();function l(t,k){return t+': '+s.map(function(x){return x.n+' '+x[k]}).join(' | ')}return l('POSTED','po')+'\n'+l('OUT','out')+'\n'+l('PRESENT','pr')}
+function pdfDoc(){var J=window.jspdf;if(!J)return null;var d=$('pd').value||today();var doc=new J.jsPDF({orientation:'landscape',unit:'mm',format:'a4'});
+ doc.setFontSize(14);doc.text('Charlie Coy - Parade State',14,14);doc.setFontSize(10);doc.text('Date: '+fd(d),14,20);
+ var C=rows().map(function(x){return Array.isArray(x)?x[0]:x});
+ var body=[['Posted strength'].concat(C.map(function(c){return c.po}))];
+ PLACES.forEach(function(p){body.push([p].concat(C.map(function(c){return c.c[p]})))});
+ body.push(['Total out'].concat(C.map(function(c){return c.out})));body.push(['Present in Coy'].concat(C.map(function(c){return c.pr})));
+ var hs={fillColor:[154,107,0]},cs={0:{halign:'left',fontStyle:'bold'}},st={fontSize:7.5,cellPadding:1.3,halign:'center'};
+ doc.autoTable({head:[['Place of detail'].concat(C.map(function(c){return c.n}))],body:body,startY:24,styles:st,columnStyles:cs,headStyles:hs});
+ var s=getSum();doc.setFontSize(10);var y=doc.lastAutoTable.finalY+7;doc.text('Strength summary',14,y);
+ doc.autoTable({head:[[''].concat(s.map(function(x){return x.n}))],body:[['Posted'].concat(s.map(function(x){return x.po})),['Out'].concat(s.map(function(x){return x.out})),['Present'].concat(s.map(function(x){return x.pr}))],startY:y+2,styles:{fontSize:9,cellPadding:1.5,halign:'center'},columnStyles:cs,headStyles:hs,tableWidth:150});
+ var mv=ro(S.outs.filter(function(x){return x.date==d})).map(function(r){return['OUT',r.rank,r.name,'to '+r.place]}).concat(ro(S.ins.filter(function(x){return x.date==d})).map(function(r){return['IN',r.rank,r.name,'from '+r.place]}));
+ if(mv.length)doc.autoTable({head:[['Movement','Rank','Name','Place']],body:mv,startY:doc.lastAutoTable.finalY+7,styles:{fontSize:8,cellPadding:1.3},headStyles:hs});
+ return doc}
+function loadJs(u){return new Promise(function(ok,no){var e=document.createElement('script');e.src=u;e.onload=ok;e.onerror=no;document.head.appendChild(e)})}
+async function ensureLibs(){if(!window.jspdf)await loadJs('https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js');if(!(window.jspdf&&window.jspdf.jsPDF.API.autoTable))await loadJs('https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.31/jspdf.plugin.autotable.min.js')}
+async function sendPdf(){var m=$('pdfm');m.textContent='Preparing PDF...';var doc;try{await ensureLibs()}catch(e){m.textContent='Internet is needed to create the PDF. Connect and try again.';return}try{doc=pdfDoc()}catch(e){doc=null}if(!doc){m.textContent='PDF could not be created. Try again.';return}m.textContent='';
+ var d=$('pd').value||today(),fn='Parade State C COY '+fd(d).replace(/\//g,'-')+'.pdf',blob=doc.output('blob'),f=new File([blob],fn,{type:'application/pdf'});
+ try{var dl=window.claude&&await claude.use('downloads');if(dl){await dl.save({filename:fn,data:blob});return}}catch(e){if(e&&e.code=='declined')return}
+ if(navigator.canShare&&navigator.canShare({files:[f]})){try{await navigator.share({files:[f],title:'Parade State C COY '+fd(d)});return}catch(e){if(e&&e.name=='AbortError')return}}
+ var a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=fn;document.body.appendChild(a);a.click();a.remove();m.textContent='PDF saved to your Downloads or Files. Attach it from there in WhatsApp.'}
+function copyTxt(){var d=$("pd").value||today(),t="CHARLIE COY PARADE STATE\nDate: "+fd(d)+"\n\n";
+ rows().forEach(function(x){var a=Array.isArray(x),r=a?x[0]:x;t+=r.n+": Posted "+r.po+" | Out "+r.out+" | Present "+r.pr+"\n";
+  var det=PLACES.filter(function(p){return r.c[p]}).map(function(p){return p+" "+r.c[p]});if(det.length&&!a)t+="   ("+det.join(", ")+")\n"});
+ var o=ro(S.outs.filter(function(x){return x.date==d})),i=ro(S.ins.filter(function(x){return x.date==d}));
+ t+="\n"+sumTxt()+"\n";if(o.length)t+="\nOUT:\n"+o.map(function(r){return r.rank+" "+r.name+" to "+r.place}).join("\n")+"\n";
+ if(i.length)t+="\nIN:\n"+i.map(function(r){return r.rank+" "+r.name+" from "+r.place}).join("\n")+"\n";
+ try{navigator.clipboard.writeText(t).then(function(){alert("Copied")},function(){prompt("Copy:",t)})}catch(e){prompt("Copy:",t)}}
+function init(){load();
+ ["o_r","i_r"].forEach(function(id){$(id).innerHTML=RANKS.map(function(r){return"<option>"+r[0]+"</option>"}).join("")});
+ fillSel();$("pd").value=today();$("o_d").value=today();$("i_d").value=today();
+ $("ps").innerHTML=RANKS.map(function(r){return"<div><label>"+r[0]+"</label><input type='number' min='0' value='"+S.posted[r[0]]+"' onchange=\"S.posted['"+r[0]+"']=+this.value;save();draw()\"></div>"}).join("");
+ draw()}
+init();
+if("serviceWorker" in navigator){window.addEventListener("load",function(){navigator.serviceWorker.register("sw.js").catch(function(){})})}
+</script></body></html>
